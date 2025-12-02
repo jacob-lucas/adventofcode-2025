@@ -1,5 +1,8 @@
 package com.jacoblucas.adventofcode2025.day02;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public record ProductId(long id) {
 
     // looking for any ID which is made only of some sequence of digits repeated twice.
@@ -14,5 +17,13 @@ public record ProductId(long id) {
         String left = idString.substring(0, idString.length() / 2);
         String right = idString.substring(idString.length() / 2);
         return !left.equals(right);
+    }
+
+    // an ID is invalid if it is made only of some sequence of digits repeated at least twice.
+    public boolean isValidV2() {
+        String regex = "(.+)\\1+";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(""+id);
+        return !matcher.matches();
     }
 }

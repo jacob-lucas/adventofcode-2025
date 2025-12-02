@@ -16,7 +16,7 @@ public class Day02 {
                 .toList();
 
         // Part 1
-        final List<ProductId> invalidProductIds = new ArrayList<>();
+        List<ProductId> invalidProductIds = new ArrayList<>();
         for (final ProductIdRange productIdRange : productIdRanges) {
             final List<ProductId> invalid = productIdRange.stream()
                     .filter(p -> !p.isValid())
@@ -26,6 +26,19 @@ public class Day02 {
         }
 
         long idSum = invalidProductIds.stream().mapToLong(ProductId::id).sum();
+        System.out.println(idSum);
+
+        // Part 2
+        invalidProductIds = new ArrayList<>();
+        for (final ProductIdRange productIdRange : productIdRanges) {
+            final List<ProductId> invalid = productIdRange.stream()
+                    .filter(p -> !p.isValidV2())
+                    .toList();
+            System.out.println("Invalid product IDs in range " + productIdRange + " are: " + invalid);
+            invalidProductIds.addAll(invalid);
+        }
+
+        idSum = invalidProductIds.stream().mapToLong(ProductId::id).sum();
         System.out.println(idSum);
     }
 }
