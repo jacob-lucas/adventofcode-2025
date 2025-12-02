@@ -23,7 +23,8 @@ public class Day01 {
                 .filter(Objects::nonNull)
                 .toList();
 
-        final Dial dial = new Dial(50, 100);
+        // Part 1
+        Dial dial = new Dial(50, 100);
         int zeroCount = 0;
         for (final TurnInstruction turnInstruction : turnInstructions) {
             int currentValue = dial.getValue();
@@ -33,6 +34,22 @@ public class Day01 {
             if (newValue == 0) {
                 zeroCount++;
             }
+
+            if (Math.abs(newValue) > dial.getCount()) {
+                System.out.println("ERROR! Dial set to " + dial.getValue());
+            }
+        }
+        System.out.println(zeroCount);
+
+        // Part 2
+        dial = new Dial(50, 100);
+        zeroCount = 0;
+        for (final TurnInstruction turnInstruction : turnInstructions) {
+            int currentValue = dial.getValue();
+            int result = dial.turnV2(turnInstruction);
+            int newValue = dial.getValue();
+            zeroCount += result;
+            System.out.println("The dial is rotated " + turnInstruction + " from " + currentValue + " to point at " + newValue + ", passing " + result + " times past 0.");
 
             if (Math.abs(newValue) > dial.getCount()) {
                 System.out.println("ERROR! Dial set to " + dial.getValue());

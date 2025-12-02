@@ -34,4 +34,23 @@ public class Dial {
         }
         return value;
     }
+
+    // You remember from the training seminar that "method 0x434C49434B" means you're actually supposed to count the
+    // number of times any click causes the dial to point at 0, regardless of whether it happens during a rotation
+    // or at the end of one.
+    public int turnV2(TurnInstruction turnInstruction) {
+        int div = turnInstruction.value() / count;
+        int mod = turnInstruction.value() % count;
+
+        int result = 0;
+        if (mod >= (value == 0 ? 100 : value) && turnInstruction.direction() == Direction.LEFT) {
+            result++;
+        } else if (mod >= (count - value) && turnInstruction.direction() == Direction.RIGHT) {
+            result++;
+        }
+
+        turn(turnInstruction);
+
+        return result + div;
+    }
 }
