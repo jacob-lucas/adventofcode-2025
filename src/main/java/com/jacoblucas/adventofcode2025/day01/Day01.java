@@ -35,6 +35,7 @@ public class Day01 extends Day {
         day01.executeWithTimer(day01::part2);
     }
 
+    @Override
     public void part1() {
         // Part 1
         Dial dial = new Dial(50, 100);
@@ -55,6 +56,7 @@ public class Day01 extends Day {
         System.out.println(zeroCount);
     }
 
+    @Override
     public void part2() {
         // Part 2
         Dial dial = new Dial(50, 100);

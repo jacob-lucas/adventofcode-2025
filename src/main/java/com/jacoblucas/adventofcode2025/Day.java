@@ -11,4 +11,8 @@ public abstract class Day {
         Duration duration = Duration.ofMillis(end - start);
         System.out.printf("Execution time: %s\n", duration);
     }
+
+    public abstract void part1();
+
+    public abstract void part2();
 }

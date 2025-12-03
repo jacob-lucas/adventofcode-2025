@@ -27,6 +27,7 @@ public class Day02 extends Day {
         day02.executeWithTimer(day02::part2);
     }
 
+    @Override
     public void part1() {
         // Part 1
         List<ProductId> invalidProductIds = new ArrayList<>();
@@ -42,6 +43,7 @@ public class Day02 extends Day {
         System.out.println(idSum);
     }
 
+    @Override
     public void part2() {
         // Part 2
         List<ProductId> invalidProductIds = new ArrayList<>();
