@@ -26,4 +26,9 @@ public class Day04Test {
         assertThat(Day04.accessibleAt(TEST_GRID, 1,1,4), is(false));
         assertThat(Day04.accessibleAt(TEST_GRID, 1,2,4), is(false));
     }
+
+    @Test
+    public void testTotalAccessible() {
+        assertThat(Day04.totalAccessible(TEST_GRID, false), is(13));
+    }
 }

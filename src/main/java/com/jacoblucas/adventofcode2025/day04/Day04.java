@@ -2,12 +2,15 @@ package com.jacoblucas.adventofcode2025.day04;
 
 import com.jacoblucas.adventofcode2025.Day;
 import com.jacoblucas.adventofcode2025.utils.InputReader;
+import com.jacoblucas.adventofcode2025.utils.IntPair;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Day04 extends Day {
     static final char ROLL = '@';
+    static final char EMPTY = '.';
 
     private final char[][] grid;
 
@@ -29,20 +32,35 @@ public class Day04 extends Day {
 
     @Override
     public void part1() {
-        int accessibleCount = 0;
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j] == ROLL && Day04.accessibleAt(grid, i, j, 4)) {
-                    accessibleCount++;
-                }
-            }
-        }
-        System.out.println(accessibleCount);
+        System.out.println(totalAccessible(grid, false));
     }
 
     @Override
     public void part2() {
+        int totalAccessible = 0;
+        int accessible = Integer.MAX_VALUE;
+        while (accessible > 0) {
+            accessible = totalAccessible(grid, true);
+            totalAccessible += accessible;
+        }
+        System.out.println(totalAccessible);
+    }
 
+    public static int totalAccessible(char[][] grid, boolean remove) {
+        int accessibleCount = 0;
+        List<IntPair> removalQueue = new ArrayList<>();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == ROLL && Day04.accessibleAt(grid, i, j, 4)) {
+                    accessibleCount++;
+                    if (remove) {
+                        removalQueue.add(new IntPair(i, j));
+                    }
+                }
+            }
+        }
+        removalQueue.forEach(pair -> grid[pair.left()][pair.right()] = EMPTY);
+        return accessibleCount;
     }
 
     public static boolean accessibleAt(char[][] grid, int row, int col, int maxAdjacentCount) {
