@@ -26,15 +26,21 @@ public class Day03 extends Day {
 
     @Override
     public void part1() {
-        int totalOutputJoltage = banks.stream()
+        long totalOutputJoltage = banks.stream()
                 .map(BatteryBank::getMaxJoltage)
-                .mapToInt(bank -> BatteryBank.getJoltage(bank.get(0), bank.get(1)))
+                .mapToLong(bank -> BatteryBank.getJoltage(bank.get(0), bank.get(1)))
                 .sum();
         System.out.println(totalOutputJoltage);
     }
 
+    // The joltage output for the bank is still the number formed by the digits of the batteries you've turned on;
+    // the only difference is that now there will be 12 digits in each bank's joltage output instead of two.
     @Override
     public void part2() {
-
+        long totalOutputJoltage = banks.stream()
+                .map(bank -> bank.getMaxJoltage(12))
+                .mapToLong(BatteryBank::getJoltage)
+                .sum();
+        System.out.println(totalOutputJoltage);
     }
 }

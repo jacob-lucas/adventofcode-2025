@@ -11,7 +11,26 @@ public class BatteryBankTest {
     @Test
     public void testGetJoltage() {
         BatteryBank batteryBank  = BatteryBank.of("987654321111111");
-        assertThat(BatteryBank.getJoltage(batteryBank.get(0), batteryBank.get(1)), is(98));
+        assertThat(BatteryBank.getJoltage(batteryBank.get(0), batteryBank.get(1)), is(98L));
+    }
+
+    @Test
+    public void testGetJoltage12() {
+        BatteryBank batteryBank  = BatteryBank.of("987654321111111");
+        assertThat(BatteryBank.getJoltage(
+                batteryBank.get(0),
+                batteryBank.get(1),
+                batteryBank.get(2),
+                batteryBank.get(3),
+                batteryBank.get(4),
+                batteryBank.get(5),
+                batteryBank.get(6),
+                batteryBank.get(7),
+                batteryBank.get(8),
+                batteryBank.get(9),
+                batteryBank.get(10),
+                batteryBank.get(11)
+        ), is(987654321111L));
     }
 
     @Test
@@ -52,5 +71,33 @@ public class BatteryBankTest {
         List<Battery> maxJoltage = batteryBank.getMaxJoltage();
         assertThat(maxJoltage.get(0).getJoltage(), is(5));
         assertThat(maxJoltage.get(1).getJoltage(), is(5));
+    }
+
+    @Test
+    public void testGetMaxJoltageLength12case1() {
+        BatteryBank batteryBank  = BatteryBank.of("987654321111111");
+        List<Battery> maxJoltage = batteryBank.getMaxJoltage(12);
+        assertThat(BatteryBank.getJoltage(maxJoltage), is(987654321111L));
+    }
+
+    @Test
+    public void testGetMaxJoltageLength12case2() {
+        BatteryBank batteryBank  = BatteryBank.of("811111111111119");
+        List<Battery> maxJoltage = batteryBank.getMaxJoltage(12);
+        assertThat(BatteryBank.getJoltage(maxJoltage), is(811111111119L));
+    }
+
+    @Test
+    public void testGetMaxJoltageLength12case3() {
+        BatteryBank batteryBank  = BatteryBank.of("234234234234278");
+        List<Battery> maxJoltage = batteryBank.getMaxJoltage(12);
+        assertThat(BatteryBank.getJoltage(maxJoltage), is(434234234278L));
+    }
+
+    @Test
+    public void testGetMaxJoltageLength12case4() {
+        BatteryBank batteryBank  = BatteryBank.of("818181911112111");
+        List<Battery> maxJoltage = batteryBank.getMaxJoltage(12);
+        assertThat(BatteryBank.getJoltage(maxJoltage), is(888911112111L));
     }
 }

@@ -3,6 +3,7 @@ package com.jacoblucas.adventofcode2025.day03;
 import com.google.common.collect.ImmutableList;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class BatteryBank {
     private final Battery[] bank;
@@ -28,32 +29,53 @@ public class BatteryBank {
     }
 
     public List<Battery> getMaxJoltage() {
-        Battery left = null;
-        Battery right = null;
-        for (int i = 0; i < bank.length - 1; i++) {
-            Battery a = bank[i];
-            for (int j = i + 1; j < bank.length; j++) {
-                Battery b = bank[j];
-                if (left == null && right == null) {
-                    left = a;
-                    right = b;
-                } else {
-                    int currentMax = getJoltage(left, right);
-                    int candidateMax = getJoltage(a, b);
-                    if (candidateMax > currentMax) {
-                        left = a;
-                        right = b;
-                    }
-                }
-            }
-        }
-        return ImmutableList.of(left, right);
+        return getMaxJoltageHelper(Arrays.asList(bank), 2);
     }
 
-    public static int getJoltage(Battery... batteries) {
+    public List<Battery> getMaxJoltage(int batteriesLeft) {
+        return getMaxJoltageHelper(Arrays.asList(bank), batteriesLeft);
+    }
+
+    private static List<Battery> getMaxJoltageHelper(List<Battery> bank, int batteriesLeft) {
+        if (batteriesLeft == 0) {
+            return ImmutableList.of();
+        }
+
+        Battery maxBattery = null;
+        int maxValue = 0;
+        int maxIndex = 0;
+        for (int i = 0; i < bank.size(); i++) {
+            if (bank.get(i).getJoltage() > maxValue) {
+                maxBattery = bank.get(i);
+                maxValue = maxBattery.getJoltage();
+                maxIndex = i;
+            }
+        }
+
+        List<Battery> tail = bank.subList(maxIndex, bank.size());
+        if (tail.size() == batteriesLeft) {
+            return tail;
+        } else if (tail.size() < batteriesLeft) {
+            return Stream.concat(
+                    getMaxJoltageHelper(bank.subList(0, maxIndex), batteriesLeft - tail.size()).stream(),
+                    tail.stream())
+                    .toList();
+        } else {
+            return Stream.concat(
+                    Stream.of(maxBattery),
+                    getMaxJoltageHelper(bank.subList(maxIndex + 1, bank.size()), batteriesLeft - 1).stream())
+                    .toList();
+        }
+    }
+
+    public static long getJoltage(List<Battery> batteries) {
+        return getJoltage(batteries.toArray(new Battery[0]));
+    }
+
+    public static long getJoltage(Battery... batteries) {
         StringBuilder sb = new StringBuilder();
         Arrays.stream(batteries)
                 .forEach(b -> sb.append(b.getJoltage()));
-        return Integer.parseInt(sb.toString());
+        return Long.parseLong(sb.toString());
     }
 }
