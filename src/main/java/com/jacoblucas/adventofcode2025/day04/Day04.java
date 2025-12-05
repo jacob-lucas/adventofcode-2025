@@ -26,8 +26,8 @@ public class Day04 extends Day {
         }
 
         Day04 day04 = new Day04(grid);
-        day04.part1();
-        day04.part2();
+        day04.executeWithTimer(day04::part1);
+        day04.executeWithTimer(day04::part2);
     }
 
     @Override
