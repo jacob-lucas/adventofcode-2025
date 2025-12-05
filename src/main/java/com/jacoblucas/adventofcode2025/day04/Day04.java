@@ -1,0 +1,62 @@
+package com.jacoblucas.adventofcode2025.day04;
+
+import com.jacoblucas.adventofcode2025.Day;
+import com.jacoblucas.adventofcode2025.utils.InputReader;
+
+import java.io.IOException;
+import java.util.List;
+
+public class Day04 extends Day {
+    static final char ROLL = '@';
+
+    private final char[][] grid;
+
+    public Day04(char[][] grid) {
+        this.grid = grid;
+    }
+
+    public static void main(String[] args) throws IOException {
+        final List<String> input = InputReader.read("day04-input.txt");
+        final char[][] grid = new char[input.size()][input.get(0).length()];
+        for (int i = 0; i < input.size(); i++) {
+            grid[i] = input.get(i).toCharArray();
+        }
+
+        Day04 day04 = new Day04(grid);
+        day04.part1();
+        day04.part2();
+    }
+
+    @Override
+    public void part1() {
+        int accessibleCount = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == ROLL && Day04.accessibleAt(grid, i, j, 4)) {
+                    accessibleCount++;
+                }
+            }
+        }
+        System.out.println(accessibleCount);
+    }
+
+    @Override
+    public void part2() {
+
+    }
+
+    public static boolean accessibleAt(char[][] grid, int row, int col, int maxAdjacentCount) {
+        int rollCount = 0;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 && j == 0) continue;
+                int x = row + i;
+                int y = col + j;
+                if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] == ROLL) {
+                    rollCount++;
+                }
+            }
+        }
+        return rollCount < maxAdjacentCount;
+    }
+}
