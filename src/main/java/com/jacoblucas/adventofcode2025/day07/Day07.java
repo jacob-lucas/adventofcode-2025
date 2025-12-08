@@ -31,7 +31,7 @@ public class Day07 extends Day {
         return grid;
     }
 
-    public static int getSplitCount(final char[][] grid) {
+    public int getSplitCount() {
         int row = 0;
         int col = 0;
         for (int i = 0; i < grid[0].length; i++) {
@@ -45,7 +45,7 @@ public class Day07 extends Day {
         return splitCoords.size();
     }
 
-    public static int getSplitCountDfsHelper(final char[][] grid, int row, int col, Map<IntPair, Integer> splitCoords) {
+    public int getSplitCountDfsHelper(final char[][] grid, int row, int col, Map<IntPair, Integer> splitCoords) {
         if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length) {
             return 0;
         } else if (grid[row][col] == '^') {
@@ -62,13 +62,45 @@ public class Day07 extends Day {
         }
     }
 
+    public long getSplitCountV2() {
+        int row = 0;
+        int col = 0;
+        for (int i = 0; i < grid[0].length; i++) {
+            if (grid[row][i] == 'S') {
+                col = i;
+                break;
+            }
+        }
+
+        Map<IntPair, Long> splitCoords = new HashMap<>();
+        return getSplitCountDfsHelperV2(grid, row, col, splitCoords);
+    }
+
+    public long getSplitCountDfsHelperV2(final char[][] grid, int row, int col, Map<IntPair, Long> splitCoords) {
+        if (row >= grid.length || col >= grid[0].length) {
+            return 1;
+        } else if (grid[row][col] == '^') {
+            // split!
+            if (splitCoords.containsKey(new IntPair(row, col))) {
+                return splitCoords.get(new IntPair(row, col));
+            } else {
+                long n = getSplitCountDfsHelperV2(grid, row, col - 1, splitCoords) + getSplitCountDfsHelperV2(grid, row, col + 1, splitCoords);
+                splitCoords.put(new IntPair(row, col), n);
+                return n;
+            }
+        } else {
+            // move down
+            return getSplitCountDfsHelperV2(grid, row + 1, col, splitCoords);
+        }
+    }
+
     @Override
     public void part1() {
-        System.out.println(getSplitCount(grid));
+        System.out.println(getSplitCount());
     }
 
     @Override
     public void part2() {
-
+        System.out.println(getSplitCountV2());
     }
 }

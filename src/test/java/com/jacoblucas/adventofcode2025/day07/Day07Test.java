@@ -31,6 +31,14 @@ public class Day07Test {
     @Test
     public void testSplitCount() {
         char[][] grid = Day07.toGrid(MANIFOLD);
-        assertThat(Day07.getSplitCount(grid), is(21));
+        final Day07 day07 = new Day07(grid);
+        assertThat(day07.getSplitCount(), is(21));
+    }
+
+    @Test
+    public void testSplitCountV2() {
+        char[][] grid = Day07.toGrid(MANIFOLD);
+        final Day07 day07 = new Day07(grid);
+        assertThat(day07.getSplitCountV2(), is(40L));
     }
 }
